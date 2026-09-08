@@ -72,16 +72,17 @@ function PlaceholderChambre() {
         <meshStandardMaterial color="#0a0c14" roughness={0.7} metalness={0.2} />
       </mesh>
       {/* mobilier abstrait */}
-      {[
+      {([
         [-3.2, 0.5, -2.4],
         [3.4, 0.35, -1.6],
         [2.2, 0.8, -3.6],
-      ].map((p, i) => (
-        <mesh key={i} position={p as [number, number, number]} castShadow receiveShadow>
+      ] as [number, number, number][]).map((p, i) => (
+        <mesh key={i} position={p} castShadow receiveShadow>
           <boxGeometry args={[1.4, p[1] * 2, 1.1]} />
           <meshStandardMaterial color="#101522" roughness={0.4} metalness={0.6} />
         </mesh>
       ))}
+
       {/* néons décoratifs */}
       <Float speed={2} floatIntensity={0.6}>
         <mesh position={[-4.2, 3.2, -4.6]}>
