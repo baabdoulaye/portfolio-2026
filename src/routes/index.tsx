@@ -8,7 +8,7 @@ import HorizontalScroll from "@/components/HorizontalScroll";
 const Scene3D = lazy(() => import("@/components/Scene3D"));
 
 export const Route = createFileRoute("/")({
-  ssr: false,
+  
   head: () => ({
     meta: [
       { title: "Abdoulaye Ba — Architecte Web & Développeur Full-Stack" },
