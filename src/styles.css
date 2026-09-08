@@ -132,13 +132,92 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+@theme inline {
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
   }
 }
+
+@utility glass-card {
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--color-border);
+  background: color-mix(in oklab, var(--card) 55%, transparent);
+  backdrop-filter: blur(22px) saturate(140%);
+  box-shadow: var(--shadow-glass);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.45s ease,
+    box-shadow 0.45s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+    border-color: color-mix(in oklab, var(--accent) 60%, transparent);
+    box-shadow: var(--shadow-neon);
+  }
+}
+
+@utility btn-glow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in oklab, var(--accent) 55%, transparent);
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+  padding: 0.85rem 2rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--foreground);
+  backdrop-filter: blur(14px);
+  transition:
+    box-shadow 0.4s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.4s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    background: color-mix(in oklab, var(--accent) 24%, transparent);
+    box-shadow: var(--shadow-neon-strong);
+  }
+}
+
+@utility text-gradient-neon {
+  background: var(--gradient-neon);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-glow {
+  text-shadow: 0 0 42px color-mix(in oklab, var(--accent) 35%, transparent);
+}
+
+@utility scanlines {
+  background-image: var(--gradient-neon),
+    repeating-linear-gradient(
+      0deg,
+      rgb(0 0 0 / 0.35) 0px,
+      rgb(0 0 0 / 0.35) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+}
+
