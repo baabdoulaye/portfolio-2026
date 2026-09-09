@@ -1,49 +1,45 @@
 import { motion } from "framer-motion";
-import ProjectCard, { type Project } from "./ProjectCard";
-
-const projects: Project[] = [
-  {
-    title: "Nebula Dashboard",
-    description:
-      "Plateforme d'analytics temps réel : visualisations WebGL, websockets et rendu incrémental.",
-    tags: ["React", "TypeScript", "Node", "WebSocket"],
-  },
-  {
-    title: "Orbit Commerce",
-    description:
-      "E-commerce headless haute performance, checkout optimisé et rendu côté serveur edge.",
-    tags: ["Next", "Stripe", "Docker", "Redis"],
-  },
-  {
-    title: "Synapse AI",
-    description:
-      "Assistant conversationnel multimodal avec pipeline RAG et interface immersive 3D.",
-    tags: ["React", "Python", "LLM", "Three.js"],
-  },
-];
+import { useState } from "react";
+import ProjectCard from "./ProjectCard";
+import { projects } from "@/data/projects";
 
 export default function Projects() {
+  const [focused, setFocused] = useState<number | null>(null);
+
   return (
-    <section className="flex h-screen shrink-0 items-center gap-8 px-8 md:gap-12 md:px-24">
+    <section className="projects-universe relative flex h-screen w-screen shrink-0 snap-center flex-col overflow-hidden px-6 pb-8 pt-20 md:px-12 lg:px-20">
       <motion.div
-        initial={{ opacity: 0, x: 40 }}
-        whileInView={{ opacity: 1, x: 0 }}
+        animate={{ opacity: focused === null ? 0 : 0.72 }}
+        className="pointer-events-none absolute inset-0 z-10 bg-background"
+      />
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="w-[60vw] shrink-0 sm:w-[34vw] lg:w-[22vw]"
+        className="relative z-20 mb-5 flex shrink-0 items-end justify-between gap-8"
       >
-        <p className="text-xs uppercase tracking-[0.32em] text-accent">02 — Travaux</p>
-        <h2 className="mt-4 font-display text-4xl font-bold leading-tight text-foreground md:text-6xl">
-          Projets <span className="text-gradient-neon">sélectionnés</span>
-        </h2>
-        <p className="mt-4 text-sm text-muted-foreground">
-          Des produits pensés pour la vitesse, la clarté et l'émotion visuelle.
+        <div>
+          <p className="text-xs font-bold uppercase text-accent">03 / Projets</p>
+          <h2 className="mt-1 font-display text-5xl font-bold leading-none text-foreground md:text-7xl">
+            SELECTED <span className="text-gradient-neon">WORK</span>
+          </h2>
+        </div>
+        <p className="hidden max-w-xs text-right text-sm text-muted-foreground lg:block">
+          Interfaces, systèmes et produits numériques conçus pour sortir du cadre.
         </p>
       </motion.div>
 
-      {projects.map((p, i) => (
-        <ProjectCard key={p.title} project={p} index={i} />
-      ))}
+      <div className="relative z-20 grid min-h-0 flex-1 grid-cols-1 gap-4 md:grid-cols-3">
+        {projects.map((project, index) => (
+          <div
+            key={project.title}
+            className={focused !== null && focused !== index ? "project-dimmed" : "project-focused"}
+          >
+            <ProjectCard project={project} index={index} onFocus={(value) => setFocused(value ? index : null)} />
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
