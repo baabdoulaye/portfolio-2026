@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 import Hero from "@/components/Hero";
+import About from "@/components/About";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import HorizontalScroll from "@/components/HorizontalScroll";
@@ -8,7 +9,6 @@ import HorizontalScroll from "@/components/HorizontalScroll";
 const Scene3D = lazy(() => import("@/components/Scene3D"));
 
 export const Route = createFileRoute("/")({
-  
   head: () => ({
     meta: [
       { title: "Abdoulaye Ba — Architecte Web & Développeur Full-Stack" },
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const explore = () => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
-    window.scrollTo({ top: max * 0.42, behavior: "smooth" });
+    window.scrollTo({ top: max * 0.5, behavior: "smooth" });
   };
 
   return (
@@ -45,7 +45,7 @@ function Index() {
         <div className="absolute inset-0 bg-[image:var(--gradient-vignette)]" />
       </div>
 
-      <header className="pointer-events-none fixed left-0 top-0 z-30 flex w-full items-center justify-between px-8 py-6 md:px-24">
+      <header className="pointer-events-none fixed left-0 top-0 z-40 flex w-full items-center justify-between px-8 py-6 md:px-24">
         <span className="font-display text-sm uppercase tracking-[0.4em] text-foreground">
           A. BA
         </span>
@@ -54,9 +54,10 @@ function Index() {
         </span>
       </header>
 
-      <div className="relative z-10">
+      <div className="relative z-20">
         <HorizontalScroll>
           <Hero onExplore={explore} />
+          <About />
           <Projects />
           <Contact />
         </HorizontalScroll>
