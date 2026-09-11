@@ -109,6 +109,7 @@
     0 24px 60px -24px color-mix(in oklab, var(--accent) 45%, transparent);
   --shadow-neon-strong: 0 0 34px color-mix(in oklab, var(--accent) 55%, transparent),
     0 0 90px color-mix(in oklab, var(--violet) 35%, transparent);
+  --shadow-progress: 0 0 18px color-mix(in oklab, var(--accent) 60%, transparent);
 }
 
 
