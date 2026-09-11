@@ -8,8 +8,9 @@ const links = [
 
 export default function Contact() {
   return (
-    <section className="flex h-screen w-screen shrink-0 items-center px-8 md:px-24">
-      <div className="max-w-3xl">
+    <section className="relative flex h-screen w-screen shrink-0 items-center overflow-hidden px-8 md:px-24">
+      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-background/90 via-background/70 to-transparent" />
+      <div className="relative z-10 max-w-3xl">
         <motion.h2
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
