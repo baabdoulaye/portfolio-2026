@@ -1,53 +1,43 @@
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
-import { Children, useEffect, useRef, type ReactNode } from "react";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { Children, useEffect, useRef, useState, type ReactNode } from "react";
 
 /**
- * Défilement horizontal « cranté » : le scroll vertical est converti en
- * translation X, et le CSS scroll-snap (mandatory) verrouille la vue au
- * centre de chaque panneau.
+ * Scrolljacking fluide : le scroll vertical de la page (sur un conteneur
+ * très haut) est traduit en translation X d'une piste flex géante.
  */
 export default function HorizontalScroll({ children }: { children: ReactNode }) {
   const panels = Children.toArray(children);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const progress = useMotionValue(0);
-  const smoothProgress = useSpring(progress, { stiffness: 180, damping: 28, mass: 0.35 });
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [vw, setVw] = useState(0);
 
   useEffect(() => {
-    const node = containerRef.current;
-    if (!node) return;
-    const update = () => {
-      const max = Math.max(node.scrollWidth - node.clientWidth, 1);
-      progress.set(node.scrollLeft / max);
-    };
-    const wheel = (event: WheelEvent) => {
-      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-      event.preventDefault();
-      node.scrollBy({ left: event.deltaY, behavior: "smooth" });
-    };
-    node.addEventListener("scroll", update, { passive: true });
-    node.addEventListener("wheel", wheel, { passive: false });
+    const update = () => setVw(window.innerWidth);
     update();
-    return () => {
-      node.removeEventListener("scroll", update);
-      node.removeEventListener("wheel", wheel);
-    };
-  }, [progress]);
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const { scrollYProgress } = useScroll({ target: wrapperRef, offset: ["start start", "end end"] });
+  const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 26, mass: 0.4 });
+  const distance = Math.max(vw * (panels.length - 1), 0);
+  const x = useTransform(smooth, [0, 1], [0, -distance]);
 
   return (
-    <div ref={containerRef} className="horizontal-stage translate-z-0">
-      {panels.map((panel, index) => (
-        <div key={index} className="h-screen w-screen shrink-0 snap-center">
-          {panel}
-        </div>
-      ))}
-      <motion.div
-        style={{ scaleX: smoothProgress }}
-        className="fixed bottom-0 left-0 z-50 h-1 w-full origin-left bg-[image:var(--gradient-neon)] shadow-[var(--shadow-progress)]"
-      />
+    <div ref={wrapperRef} style={{ height: `${panels.length * 100}vh` }} className="relative">
+      <div className="sticky top-0 h-screen w-screen overflow-hidden">
+        <motion.div style={{ x, willChange: "transform" }} className="flex h-screen translate-z-0">
+          {panels.map((panel, index) => (
+            <div key={index} className="h-screen w-screen shrink-0">
+              {panel}
+            </div>
+          ))}
+        </motion.div>
+
+        <motion.div
+          style={{ scaleX: smooth, willChange: "transform" }}
+          className="absolute bottom-0 left-0 z-50 h-1 w-full origin-left bg-[image:var(--gradient-neon)] shadow-[var(--shadow-progress)]"
+        />
+      </div>
     </div>
   );
 }
