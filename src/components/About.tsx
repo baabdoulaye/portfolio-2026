@@ -1,11 +1,23 @@
 import { motion } from "framer-motion";
+import ScatterText from "./ScatterText";
 
 const skills = ["React", "TypeScript", "Three.js", "Node", "Motion", "Architecture"];
 
-export default function About() {
+export default function About({ active }: { active: boolean }) {
   return (
     <section className="relative flex h-screen w-screen shrink-0 items-center overflow-hidden px-6 py-20 md:px-12 lg:px-20">
-      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-background/90 via-background/70 to-transparent" />
+      <motion.video
+        src="/about-coding.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        animate={{ opacity: active ? 0.72 : 0 }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+        className="absolute inset-0 -z-10 h-full w-full scale-105 object-cover"
+      />
+      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-background/95 via-background/75 to-background/25" />
 
       <div className="relative z-10 grid w-full items-center gap-10 lg:grid-cols-[auto_1fr]">
         <motion.div
@@ -44,8 +56,8 @@ export default function About() {
           >
             <p className="text-sm font-bold uppercase text-accent">02 / À propos</p>
             <h2 className="mt-3 font-display text-4xl font-bold leading-[0.95] text-foreground sm:text-6xl xl:text-7xl">
-              JE CONSTRUIS DES EXPÉRIENCES QUI{" "}
-              <span className="text-gradient-neon">MARQUENT.</span>
+              <ScatterText text="JE CONSTRUIS DES EXPÉRIENCES" by="words" className="inline" />{" "}
+              <ScatterText text="QUI MARQUENT." by="words" className="text-gradient-neon inline" />
             </h2>
           </motion.div>
 
