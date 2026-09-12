@@ -11,8 +11,8 @@ export default function CustomCursor() {
 
   useEffect(() => {
     const move = (event: PointerEvent) => {
-      pointerX.set(event.clientX - 24);
-      pointerY.set(event.clientY - 24);
+      pointerX.set(event.clientX - 42);
+      pointerY.set(event.clientY - 42);
       setVisible(true);
     };
     const over = (event: PointerEvent) => {
@@ -35,7 +35,7 @@ export default function CustomCursor() {
     <motion.div
       aria-hidden
       style={{ x, y }}
-      animate={{ scale: active ? 1.85 : 1, opacity: visible ? 1 : 0 }}
+      animate={{ scale: active ? 1.65 : 1, opacity: visible ? 1 : 0 }}
       transition={{ scale: { type: "spring", stiffness: 360, damping: 24 }, opacity: { duration: 0.18 } }}
       className="custom-cursor"
     />
