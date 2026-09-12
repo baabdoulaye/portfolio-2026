@@ -177,8 +177,48 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    overflow: hidden;
     scrollbar-width: none;
+  }
+}
+
+@media (pointer: fine) {
+  body,
+  a,
+  button,
+  [data-cursor-focus] {
+    cursor: none;
+  }
+}
+
+.horizontal-track {
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  transform: translateZ(0);
+}
+
+.horizontal-track::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-cursor {
+  position: fixed;
+  inset: 0 auto auto 0;
+  z-index: 100;
+  width: 5.25rem;
+  height: 5.25rem;
+  pointer-events: none;
+  border: 2px solid var(--foreground);
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--foreground) 14%, transparent);
+  box-shadow: 0 0 38px color-mix(in oklab, var(--accent) 55%, transparent);
+  mix-blend-mode: difference;
+  backdrop-filter: blur(2px);
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .custom-cursor {
+    display: none;
   }
 }
 
@@ -213,12 +253,15 @@
   &:hover {
     transform: translateY(-8px) scale(1.02);
     border-color: color-mix(in oklab, var(--accent) 70%, transparent);
-    box-shadow: var(--shadow-neon-strong);
+    box-shadow: var(--shadow-neon-strong), 0 0 0 2px color-mix(in oklab, var(--violet) 48%, transparent);
   }
 }
 
 @utility project-visual {
-  background: var(--gradient-neon);
+  background:
+    radial-gradient(circle at 74% 35%, color-mix(in oklab, var(--violet) 72%, transparent), transparent 32%),
+    radial-gradient(circle at 22% 68%, color-mix(in oklab, var(--accent) 72%, transparent), transparent 38%),
+    var(--gradient-neon);
 }
 
 @utility photo-frame {

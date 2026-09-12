@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import ScatterText from "./ScatterText";
 
 export default function Hero({ onExplore }: { onExplore: () => void }) {
   return (
@@ -21,8 +23,8 @@ export default function Hero({ onExplore }: { onExplore: () => void }) {
           transition={{ duration: 1, delay: 0.1 }}
           className="hero-title max-w-[12ch] font-display text-6xl font-bold leading-[0.78] text-foreground sm:text-8xl md:text-9xl"
         >
-          <span className="block">ABDOULAYE</span>
-          <span className="text-gradient-neon block">BA</span>
+          <ScatterText text="ABDOULAYE" className="block" />
+          <ScatterText text="BA" className="text-gradient-neon block" />
         </motion.h1>
 
         <motion.p
@@ -40,9 +42,9 @@ export default function Hero({ onExplore }: { onExplore: () => void }) {
           transition={{ duration: 0.9, delay: 0.4 }}
           className="mt-8 flex flex-wrap items-center gap-5"
         >
-           <button onClick={onExplore} className="btn-glow" data-cursor-focus>
+           <Button onClick={onExplore} className="btn-glow h-auto" data-cursor-focus>
             Explorer mes projets
-          </button>
+           </Button>
           <span className="text-xs font-bold uppercase text-muted-foreground">
             Glissez vers la droite →
           </span>

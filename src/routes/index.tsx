@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useCallback, useState } from "react";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import Projects from "@/components/Projects";
-import Contact from "@/components/Contact";
+import ProjectCard from "@/components/ProjectCard";
 import HorizontalScroll from "@/components/HorizontalScroll";
+import CustomCursor from "@/components/CustomCursor";
+import { projects } from "@/data/projects";
 
 const Scene3D = lazy(() => import("@/components/Scene3D"));
 
@@ -31,17 +32,21 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const handleActiveIndexChange = useCallback((index: number) => setActiveIndex(index), []);
   const explore = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    window.scrollTo({ top: max * 0.5, behavior: "smooth" });
+    document.getElementById("portfolio-track")?.scrollTo({ left: window.innerWidth * 2, behavior: "smooth" });
   };
 
   return (
     <main className="relative bg-background">
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <Suspense fallback={null}>
-          <Scene3D />
-        </Suspense>
+      <CustomCursor />
+      <div
+        className={`pointer-events-none fixed inset-0 z-0 transition-opacity duration-700 ${
+          activeIndex === 1 ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <Suspense fallback={null}><Scene3D /></Suspense>
         <div className="absolute inset-0 bg-[image:var(--gradient-vignette)]" />
       </div>
 
@@ -54,13 +59,23 @@ function Index() {
         </span>
       </header>
 
-      <div className="relative z-20">
-        <HorizontalScroll>
+      <div className="relative z-20 h-dvh overflow-hidden">
+        <HorizontalScroll onActiveIndexChange={handleActiveIndexChange}>
           <Hero onExplore={explore} />
-          <About />
-          <Projects />
-          <Contact />
+          <About active={activeIndex === 1} />
+          {projects.map((project, index) => (
+            <ProjectCard key={project.title} project={project} index={index} />
+          ))}
         </HorizontalScroll>
+      </div>
+
+      <div className="pointer-events-none fixed bottom-5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2">
+        {Array.from({ length: 8 }, (_, index) => (
+          <span
+            key={index}
+            className={`h-1 transition-all duration-300 ${activeIndex === index ? "w-9 bg-accent" : "w-3 bg-foreground/25"}`}
+          />
+        ))}
       </div>
     </main>
   );

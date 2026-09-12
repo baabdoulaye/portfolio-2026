@@ -63,7 +63,7 @@ export default function Scene3D() {
       <Suspense fallback={null}>
         <NeonObjects />
         <EffectComposer multisampling={0}>
-          <Bloom mipmapBlur intensity={0.35} radius={0.4} luminanceThreshold={0.6} luminanceSmoothing={0.4} />
+          <Bloom mipmapBlur intensity={0.62} radius={0.48} luminanceThreshold={0.48} luminanceSmoothing={0.55} />
         </EffectComposer>
       </Suspense>
     </Canvas>

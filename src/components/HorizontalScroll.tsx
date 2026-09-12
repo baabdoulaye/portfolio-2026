@@ -1,43 +1,85 @@
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
-import { Children, useEffect, useRef, useState, type ReactNode } from "react";
+import { Children, useEffect, useRef, type ReactNode } from "react";
 
 /**
- * Scrolljacking fluide : le scroll vertical de la page (sur un conteneur
- * très haut) est traduit en translation X d'une piste flex géante.
+ * Navigation horizontale crantée : un geste de molette = un écran.
  */
-export default function HorizontalScroll({ children }: { children: ReactNode }) {
+export default function HorizontalScroll({
+  children,
+  onActiveIndexChange,
+}: {
+  children: ReactNode;
+  onActiveIndexChange?: (index: number) => void;
+}) {
   const panels = Children.toArray(children);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const [vw, setVw] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const lockedRef = useRef(false);
+  const activeRef = useRef(0);
 
   useEffect(() => {
-    const update = () => setVw(window.innerWidth);
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
+    const track = trackRef.current;
+    if (!track) return;
 
-  const { scrollYProgress } = useScroll({ target: wrapperRef, offset: ["start start", "end end"] });
-  const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 26, mass: 0.4 });
-  const distance = Math.max(vw * (panels.length - 1), 0);
-  const x = useTransform(smooth, [0, 1], [0, -distance]);
+    let settleTimer = 0;
+    const select = (index: number, behavior: ScrollBehavior = "smooth") => {
+      const next = Math.max(0, Math.min(panels.length - 1, index));
+      activeRef.current = next;
+      onActiveIndexChange?.(next);
+      track.scrollTo({ left: next * track.clientWidth, behavior });
+    };
+
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      if (lockedRef.current || Math.abs(event.deltaY) + Math.abs(event.deltaX) < 8) return;
+      const direction = (Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX) > 0 ? 1 : -1;
+      const next = Math.max(0, Math.min(panels.length - 1, activeRef.current + direction));
+      if (next === activeRef.current) return;
+      lockedRef.current = true;
+      select(next);
+      window.setTimeout(() => {
+        lockedRef.current = false;
+      }, 720);
+    };
+
+    const onScroll = () => {
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(() => {
+        const next = Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
+        if (next !== activeRef.current) {
+          activeRef.current = next;
+          onActiveIndexChange?.(next);
+        }
+        track.scrollTo({ left: next * track.clientWidth, behavior: "smooth" });
+      }, 120);
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+      event.preventDefault();
+      select(activeRef.current + (event.key === "ArrowRight" ? 1 : -1));
+    };
+
+    track.addEventListener("wheel", onWheel, { passive: false });
+    track.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.clearTimeout(settleTimer);
+      track.removeEventListener("wheel", onWheel);
+      track.removeEventListener("scroll", onScroll);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [onActiveIndexChange, panels.length]);
 
   return (
-    <div ref={wrapperRef} style={{ height: `${panels.length * 100}vh` }} className="relative">
-      <div className="sticky top-0 h-screen w-screen overflow-hidden">
-        <motion.div style={{ x, willChange: "transform" }} className="flex h-screen translate-z-0">
-          {panels.map((panel, index) => (
-            <div key={index} className="h-screen w-screen shrink-0">
-              {panel}
-            </div>
-          ))}
-        </motion.div>
-
-        <motion.div
-          style={{ scaleX: smooth, willChange: "transform" }}
-          className="absolute bottom-0 left-0 z-50 h-1 w-full origin-left bg-[image:var(--gradient-neon)] shadow-[var(--shadow-progress)]"
-        />
-      </div>
+    <div
+      id="portfolio-track"
+      ref={trackRef}
+      className="horizontal-track relative flex h-dvh w-screen snap-x snap-mandatory overflow-x-scroll overflow-y-hidden overscroll-none"
+    >
+      {panels.map((panel, index) => (
+        <div key={index} className="h-dvh min-w-full snap-center snap-always overflow-hidden">
+          {panel}
+        </div>
+      ))}
     </div>
   );
 }
