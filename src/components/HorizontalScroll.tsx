@@ -71,6 +71,7 @@ export default function HorizontalScroll({
 
   return (
     <div
+      id="portfolio-track"
       ref={trackRef}
       className="horizontal-track relative flex h-dvh w-screen snap-x snap-mandatory overflow-x-scroll overflow-y-hidden overscroll-none"
     >
