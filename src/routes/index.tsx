@@ -64,7 +64,12 @@ function Index() {
           <Hero onExplore={explore} />
           <About active={activeIndex === 1} />
           {projects.map((project, index) => (
-            <ProjectCard key={project.title} project={project} index={index} />
+            <ProjectCard
+              key={project.title}
+              project={project}
+              index={index}
+              active={activeIndex === index + 2}
+            />
           ))}
         </HorizontalScroll>
       </div>

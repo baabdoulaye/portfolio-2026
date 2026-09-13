@@ -7,7 +7,7 @@ export default function About({ active }: { active: boolean }) {
   return (
     <section className="relative flex h-screen w-screen shrink-0 items-center overflow-hidden px-6 py-20 md:px-12 lg:px-20">
       <motion.video
-        src="/about-coding.mp4"
+        src={active ? "/about-coding.mp4" : undefined}
         autoPlay
         loop
         muted

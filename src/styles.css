@@ -214,6 +214,7 @@
   box-shadow: 0 0 38px color-mix(in oklab, var(--accent) 55%, transparent);
   mix-blend-mode: difference;
   backdrop-filter: blur(2px);
+  will-change: transform;
 }
 
 @media (pointer: coarse), (prefers-reduced-motion: reduce) {
