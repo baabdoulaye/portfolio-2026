@@ -17,7 +17,7 @@ export default function ProjectCard({
   const [hovered, setHovered] = useState(false);
 
   return (
-    <section className="relative flex h-screen w-screen shrink-0 items-center overflow-hidden px-5 py-20 md:px-12 lg:px-20">
+    <section className="relative isolate flex h-dvh w-screen shrink-0 items-center overflow-hidden px-5 py-20 md:px-12 lg:px-20">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-background/20" />
       <motion.article
       initial={{ opacity: 0, y: 60 }}

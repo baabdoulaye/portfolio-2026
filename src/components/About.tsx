@@ -5,7 +5,7 @@ const skills = ["React", "TypeScript", "Three.js", "Node", "Motion", "Architectu
 
 export default function About({ active }: { active: boolean }) {
   return (
-    <section className="relative flex h-screen w-screen shrink-0 items-center overflow-hidden px-6 py-20 md:px-12 lg:px-20">
+    <section className="relative isolate flex h-dvh w-screen shrink-0 items-center overflow-hidden px-6 py-20 md:px-12 lg:px-20">
       <motion.video
         src={active ? "/about-coding.mp4" : undefined}
         autoPlay
