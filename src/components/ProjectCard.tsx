@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import type { Project } from "@/data/projects";
 import ScatterText from "./ScatterText";
 
@@ -8,25 +8,31 @@ export type { Project };
 export default function ProjectCard({
   project,
   index,
+  active,
 }: {
   project: Project;
   index: number;
+  active: boolean;
 }) {
+  const [hovered, setHovered] = useState(false);
+
   return (
-    <section className="relative flex h-screen w-screen shrink-0 items-center overflow-hidden px-5 py-20 md:px-12 lg:px-20">
+    <section className="relative isolate flex h-dvh w-screen shrink-0 items-center overflow-hidden px-5 py-20 md:px-12 lg:px-20">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-background/20" />
       <motion.article
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ amount: 0.35 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
       className="project-card group relative z-10 h-[68vh] w-full max-w-[1500px] overflow-hidden translate-z-0 md:h-[72vh]"
       data-cursor-focus
     >
       <Suspense fallback={<div className="scanlines absolute inset-0" />}>
         <div className={`project-visual project-visual-${index + 1} absolute inset-0 -z-20 opacity-35`} />
         <video
-          src={project.video}
+          src={active || hovered ? project.video : undefined}
           autoPlay
           loop
           muted
