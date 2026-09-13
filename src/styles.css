@@ -193,7 +193,6 @@
 
 .horizontal-track {
   scrollbar-width: none;
-  scroll-behavior: smooth;
   transform: translateZ(0);
 }
 

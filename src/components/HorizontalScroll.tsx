@@ -25,6 +25,7 @@ export default function HorizontalScroll({
       const distance = left - start;
       const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 620;
       const startedAt = performance.now();
+      track.style.scrollSnapType = "none";
       const frame = (now: number) => {
         const progress = duration === 0 ? 1 : Math.min((now - startedAt) / duration, 1);
         const eased = 1 - Math.pow(1 - progress, 4);
@@ -32,7 +33,10 @@ export default function HorizontalScroll({
         if (progress < 1) requestAnimationFrame(frame);
         else {
           track.scrollLeft = left;
-          lockedRef.current = false;
+          requestAnimationFrame(() => {
+            track.style.scrollSnapType = "x mandatory";
+            lockedRef.current = false;
+          });
         }
       };
       requestAnimationFrame(frame);
