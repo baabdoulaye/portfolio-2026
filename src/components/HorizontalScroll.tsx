@@ -20,11 +20,31 @@ export default function HorizontalScroll({
     if (!track) return;
 
     let settleTimer = 0;
+    const animateTo = (left: number) => {
+      const start = track.scrollLeft;
+      const distance = left - start;
+      const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 620;
+      const startedAt = performance.now();
+      const frame = (now: number) => {
+        const progress = duration === 0 ? 1 : Math.min((now - startedAt) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 4);
+        track.scrollLeft = start + distance * eased;
+        if (progress < 1) requestAnimationFrame(frame);
+        else {
+          track.scrollLeft = left;
+          lockedRef.current = false;
+        }
+      };
+      requestAnimationFrame(frame);
+    };
+
     const select = (index: number, behavior: ScrollBehavior = "smooth") => {
       const next = Math.max(0, Math.min(panels.length - 1, index));
       activeRef.current = next;
       onActiveIndexChange?.(next);
-      track.scrollTo({ left: next * track.clientWidth, behavior });
+      const left = next * track.clientWidth;
+      if (behavior === "smooth") animateTo(left);
+      else track.scrollLeft = left;
     };
 
     const onWheel = (event: WheelEvent) => {
@@ -35,12 +55,10 @@ export default function HorizontalScroll({
       if (next === activeRef.current) return;
       lockedRef.current = true;
       select(next);
-      window.setTimeout(() => {
-        lockedRef.current = false;
-      }, 720);
     };
 
     const onScroll = () => {
+      if (lockedRef.current) return;
       window.clearTimeout(settleTimer);
       settleTimer = window.setTimeout(() => {
         const next = Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
