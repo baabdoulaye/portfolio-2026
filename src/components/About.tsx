@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import ScatterText from "./ScatterText";
 
 const skills = ["React", "TypeScript", "Three.js", "Node", "Motion", "Architecture"];
 
@@ -55,10 +54,14 @@ export default function About({ active }: { active: boolean }) {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className="text-sm font-bold uppercase text-accent">02 / À propos</p>
-            <h2 className="mt-3 font-display text-4xl font-bold leading-[0.95] text-foreground sm:text-6xl xl:text-7xl">
-              <ScatterText text="JE CONSTRUIS DES EXPÉRIENCES" by="words" className="inline" />{" "}
-              <ScatterText text="QUI MARQUENT." by="words" className="text-gradient-neon inline" />
-            </h2>
+            <motion.h2
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 260, damping: 22 }}
+              className="mt-3 origin-left font-display text-4xl font-bold leading-[0.95] text-foreground sm:text-6xl xl:text-7xl"
+              data-cursor-focus
+            >
+              JE CONSTRUIS DES EXPÉRIENCES <span className="text-gradient-neon">QUI MARQUENT.</span>
+            </motion.h2>
           </motion.div>
 
           <p className="max-w-2xl text-base leading-relaxed text-foreground/85 md:text-lg">

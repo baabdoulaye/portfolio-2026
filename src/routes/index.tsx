@@ -5,6 +5,7 @@ import About from "@/components/About";
 import ProjectCard from "@/components/ProjectCard";
 import HorizontalScroll from "@/components/HorizontalScroll";
 import CustomCursor from "@/components/CustomCursor";
+import Contact from "@/components/Contact";
 import { projects } from "@/data/projects";
 
 const Scene3D = lazy(() => import("@/components/Scene3D"));
@@ -39,10 +40,10 @@ function Index() {
   };
 
   return (
-    <main className="relative bg-background">
+    <main className="relative">
       <CustomCursor />
       <div
-        className={`pointer-events-none fixed inset-0 z-0 transition-opacity duration-700 ${
+        className={`pointer-events-none fixed left-0 top-0 -z-20 h-screen w-screen transition-opacity duration-700 ${
           activeIndex === 1 ? "opacity-0" : "opacity-100"
         }`}
       >
@@ -71,11 +72,12 @@ function Index() {
               active={activeIndex === index + 2}
             />
           ))}
+          <Contact />
         </HorizontalScroll>
       </div>
 
       <div className="pointer-events-none fixed bottom-5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2">
-        {Array.from({ length: 8 }, (_, index) => (
+        {Array.from({ length: 9 }, (_, index) => (
           <span
             key={index}
             className={`h-1 transition-all duration-300 ${activeIndex === index ? "w-9 bg-accent" : "w-3 bg-foreground/25"}`}
