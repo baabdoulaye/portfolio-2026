@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { Suspense, useState } from "react";
 import type { Project } from "@/data/projects";
-import ScatterText from "./ScatterText";
 
 export type { Project };
 
@@ -51,9 +50,14 @@ export default function ProjectCard({
 
       <div className="absolute inset-x-0 bottom-0 z-10 p-6 md:p-10 lg:p-14">
         <p className="mb-3 text-xs font-bold uppercase text-accent">Projet 0{index + 1} / 06</p>
-        <h3 className="font-display text-4xl font-bold leading-none text-foreground sm:text-6xl lg:text-8xl">
-          <ScatterText text={project.title.toUpperCase()} by="words" />
-        </h3>
+        <motion.h3
+          whileHover={{ scale: 1.1 }}
+          transition={{ type: "spring", stiffness: 260, damping: 22 }}
+          className="origin-left font-display text-4xl font-bold leading-none text-foreground sm:text-6xl lg:text-8xl"
+          data-cursor-focus
+        >
+          {project.title.toUpperCase()}
+        </motion.h3>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-foreground/90 md:text-lg">
           {project.description}
         </p>
@@ -64,6 +68,15 @@ export default function ProjectCard({
             </span>
           ))}
         </div>
+        <a
+          href={project.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="project-cta mt-6"
+          data-cursor-focus
+        >
+          Voir le projet <span aria-hidden>↗</span>
+        </a>
       </div>
       </motion.article>
     </section>

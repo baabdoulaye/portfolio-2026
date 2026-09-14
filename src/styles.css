@@ -173,7 +173,7 @@
   }
 
   body {
-    background-color: var(--color-background);
+    background-color: transparent;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -212,8 +212,46 @@
   background: color-mix(in oklab, var(--foreground) 14%, transparent);
   box-shadow: 0 0 38px color-mix(in oklab, var(--accent) 55%, transparent);
   mix-blend-mode: difference;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px) saturate(150%);
   will-change: transform;
+}
+
+@utility project-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--accent) 75%, transparent);
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--background) 68%, transparent);
+  padding: 0.8rem 1.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--foreground);
+  backdrop-filter: blur(14px) saturate(150%);
+  box-shadow: 0 0 26px color-mix(in oklab, var(--accent) 28%, transparent);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-120%) skewX(-22deg);
+    background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--foreground) 38%, transparent), transparent);
+    transition: transform 0.55s ease;
+  }
+
+  &:hover {
+    transform: translateY(-3px) scale(1.04);
+    background: color-mix(in oklab, var(--accent) 20%, transparent);
+    box-shadow: var(--shadow-neon-strong);
+  }
+
+  &:hover::before {
+    transform: translateX(120%) skewX(-22deg);
+  }
 }
 
 @media (pointer: coarse), (prefers-reduced-motion: reduce) {

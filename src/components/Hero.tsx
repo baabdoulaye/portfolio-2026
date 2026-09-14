@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import ScatterText from "./ScatterText";
 
 export default function Hero({ onExplore }: { onExplore: () => void }) {
   return (
@@ -20,11 +19,13 @@ export default function Hero({ onExplore }: { onExplore: () => void }) {
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
+          whileHover={{ scale: 1.1 }}
           transition={{ duration: 1, delay: 0.1 }}
-          className="hero-title max-w-[12ch] font-display text-6xl font-bold leading-[0.78] text-foreground sm:text-8xl md:text-9xl"
+          className="hero-title max-w-[12ch] origin-left font-display text-6xl font-bold leading-[0.78] text-foreground sm:text-8xl md:text-9xl"
+          data-cursor-focus
         >
-          <ScatterText text="ABDOULAYE" className="block" />
-          <ScatterText text="BA" className="text-gradient-neon block" />
+          <span className="block">ABDOULAYE</span>
+          <span className="text-gradient-neon block">BA</span>
         </motion.h1>
 
         <motion.p
