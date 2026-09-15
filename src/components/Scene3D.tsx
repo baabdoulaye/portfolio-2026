@@ -1,50 +1,85 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float } from "@react-three/drei";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import { Suspense, useRef } from "react";
+import { Suspense, useMemo, useRef } from "react";
 import * as THREE from "three";
 
-function NeonObjects() {
-  const ref = useRef<THREE.Group>(null);
-  useFrame(({ pointer }, delta) => {
-    if (!ref.current) return;
-    ref.current.rotation.y += delta * 0.1;
-    ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, pointer.y * 0.1, 0.02);
-    ref.current.position.x = THREE.MathUtils.lerp(ref.current.position.x, pointer.x * 0.4, 0.02);
+const vertexShader = /* glsl */ `
+  uniform float uTime;
+  varying vec2 vUv;
+  varying float vHeight;
+  varying float vFlow;
+
+  float waves(vec2 point) {
+    float broad = sin(point.x * 0.72 + uTime * 0.48) * 0.42;
+    float crossing = sin(point.y * 0.9 - uTime * 0.34 + point.x * 0.24) * 0.3;
+    float detail = sin((point.x + point.y) * 1.35 + uTime * 0.22) * 0.12;
+    return broad + crossing + detail;
+  }
+
+  void main() {
+    vUv = uv;
+    vec3 displaced = position;
+    float edgeSoftness = sin(uv.x * 3.14159265) * sin(uv.y * 3.14159265);
+    vHeight = waves(position.xy);
+    vFlow = sin(position.x * 0.62 + position.y * 1.08 + uTime * 0.3);
+    displaced.z += vHeight * (0.7 + edgeSoftness * 0.3);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
+  }
+`;
+
+const fragmentShader = /* glsl */ `
+  uniform float uTime;
+  varying vec2 vUv;
+  varying float vHeight;
+  varying float vFlow;
+
+  void main() {
+    vec3 midnight = vec3(0.005, 0.018, 0.075);
+    vec3 navy = vec3(0.012, 0.075, 0.19);
+    vec3 azure = vec3(0.02, 0.35, 0.58);
+    vec3 cyan = vec3(0.0, 0.86, 0.95);
+
+    float heightMix = smoothstep(-0.72, 0.76, vHeight);
+    float crest = smoothstep(0.28, 0.73, vHeight);
+    float softBand = 0.5 + 0.5 * sin(vUv.y * 18.0 + vUv.x * 8.0 - uTime * 0.36);
+    float horizon = smoothstep(0.0, 0.72, vUv.y) * (1.0 - smoothstep(0.72, 1.0, vUv.y));
+    float contour = 1.0 - smoothstep(0.035, 0.16, abs(vFlow));
+    float diagonalRidge = 1.0 - smoothstep(0.03, 0.2, abs(sin(vUv.x * 9.0 + vUv.y * 12.0 + vHeight * 2.2 - uTime * 0.22)));
+
+    vec3 color = mix(midnight, navy, heightMix);
+    color = mix(color, azure, crest * 0.55);
+    color += cyan * crest * (0.12 + softBand * 0.16);
+    color += azure * contour * (0.06 + crest * 0.13);
+    color += cyan * diagonalRidge * crest * 0.055;
+    color += azure * horizon * 0.08;
+    color *= 0.72 + 0.28 * smoothstep(0.0, 0.35, vUv.y);
+    gl_FragColor = vec4(color, 1.0);
+  }
+`;
+
+function DeepBlueWaves() {
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+  const uniforms = useMemo(() => ({ uTime: { value: 0 } }), []);
+
+  useFrame((_, rawDelta) => {
+    const material = materialRef.current;
+    if (!material) return;
+    const delta = Math.min(rawDelta, 0.05);
+    const timeUniform = material.uniforms["uTime"];
+    if (timeUniform) timeUniform.value += delta * 0.16;
   });
+
   return (
-    <group ref={ref} position={[2.2, 0, 0]}>
-      <Float speed={1.2} rotationIntensity={0.6} floatIntensity={1}>
-        <mesh rotation={[0.7, 0.3, 0.2]} scale={2.1}>
-          <torusKnotGeometry args={[1, 0.24, 96, 12]} />
-          <meshStandardMaterial
-            color="#061316"
-            emissive="#00c8dd"
-            emissiveIntensity={1.4}
-            metalness={0.85}
-            roughness={0.25}
-          />
-        </mesh>
-      </Float>
-      <Float speed={1.6} rotationIntensity={0.9} floatIntensity={1.2}>
-        <mesh position={[-3.4, 1.6, -1.2]} scale={1.1}>
-          <icosahedronGeometry args={[1, 1]} />
-          <meshStandardMaterial color="#220018" emissive="#c01673" emissiveIntensity={1.1} wireframe />
-        </mesh>
-      </Float>
-      <Float speed={1.1} rotationIntensity={0.4} floatIntensity={1.1}>
-        <mesh position={[3.2, -1.7, -1]} scale={0.8}>
-          <sphereGeometry args={[1, 24, 16]} />
-          <meshStandardMaterial
-            color="#1b102d"
-            emissive="#5b2ccc"
-            emissiveIntensity={0.9}
-            metalness={0.7}
-            roughness={0.3}
-          />
-        </mesh>
-      </Float>
-    </group>
+    <mesh scale={[1.2, 1.2, 1]}>
+      <planeGeometry args={[18, 11, 96, 64]} />
+      <shaderMaterial
+        ref={materialRef}
+        uniforms={uniforms}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        toneMapped={false}
+      />
+    </mesh>
   );
 }
 
@@ -52,18 +87,15 @@ export default function Scene3D() {
   return (
     <Canvas
       dpr={[1, 1.25]}
-      camera={{ position: [0, 0, 8], fov: 48 }}
+      camera={{ position: [0, 0, 7.4], fov: 50 }}
       gl={{ antialias: false, powerPreference: "high-performance" }}
     >
-      <color attach="background" args={["#05070c"]} />
-      <ambientLight intensity={0.25} />
-      <pointLight position={[4, 4, 5]} intensity={14} color="#00d5e8" />
-      <pointLight position={[-4, -2, 3]} intensity={12} color="#d61a7f" />
+      <color attach="background" args={["#020716"]} />
 
       <Suspense fallback={null}>
-        <NeonObjects />
+        <DeepBlueWaves />
         <EffectComposer multisampling={0}>
-          <Bloom mipmapBlur intensity={0.62} radius={0.48} luminanceThreshold={0.48} luminanceSmoothing={0.55} />
+          <Bloom mipmapBlur intensity={0.34} radius={0.36} luminanceThreshold={0.34} luminanceSmoothing={0.72} />
         </EffectComposer>
       </Suspense>
     </Canvas>
