@@ -1,5 +1,8 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import AnimatedText from "@/components/AnimatedText";
+
+const MotionButton = motion.create(Button);
 
 export default function Hero({ onExplore }: { onExplore: () => void }) {
   return (
@@ -19,13 +22,11 @@ export default function Hero({ onExplore }: { onExplore: () => void }) {
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          whileHover={{ scale: 1.1 }}
           transition={{ duration: 1, delay: 0.1 }}
           className="hero-title max-w-[12ch] origin-left font-display text-6xl font-bold leading-[0.78] text-foreground sm:text-8xl md:text-9xl"
-          data-cursor-focus
         >
-          <span className="block">ABDOULAYE</span>
-          <span className="text-gradient-neon block">BA</span>
+          <AnimatedText text="ABDOULAYE" className="block" />
+          <AnimatedText text="BA" className="block" />
         </motion.h1>
 
         <motion.p
@@ -43,9 +44,22 @@ export default function Hero({ onExplore }: { onExplore: () => void }) {
           transition={{ duration: 0.9, delay: 0.4 }}
           className="mt-8 flex flex-wrap items-center gap-5"
         >
-           <Button onClick={onExplore} className="btn-glow h-auto" data-cursor-focus>
-            Explorer mes projets
-           </Button>
+           <MotionButton
+             onClick={onExplore}
+             className="btn-glow h-auto"
+             data-cursor-focus
+             whileHover={{ scaleX: 1.045, scaleY: 1.025 }}
+             whileTap={{ scale: 0.985 }}
+             transition={{ type: "spring", stiffness: 170, damping: 20, mass: 0.75 }}
+           >
+             <motion.span
+               className="relative z-10"
+               whileHover={{ color: "var(--letter-highlight)", textShadow: "0 0 18px var(--letter-highlight)" }}
+               transition={{ duration: 0.4, ease: "easeOut" }}
+             >
+               Explorer mes projets
+             </motion.span>
+           </MotionButton>
           <span className="text-xs font-bold uppercase text-muted-foreground">
             Glissez vers la droite →
           </span>

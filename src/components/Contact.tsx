@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import AnimatedText from "@/components/AnimatedText";
 
 const links = [
   { label: "Téléphone", href: "tel:+33000000000", value: "+33 • •• •• •• ••" },
@@ -18,11 +19,9 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.8 }}
-          whileHover={{ scale: 1.1 }}
           className="origin-left font-display text-5xl font-bold text-foreground md:text-7xl lg:text-8xl"
-          data-cursor-focus
         >
-          Construisons <span className="text-gradient-neon">la suite</span>.
+          <AnimatedText text="Construisons la suite." />
         </motion.h2>
 
         <motion.p

@@ -83,6 +83,7 @@
   --input: oklch(0.98 0.01 240 / 15%);
   --ring: oklch(0.82 0.16 195);
   --violet: oklch(0.68 0.22 305);
+  --letter-highlight: #00ffff;
   --chart-1: oklch(0.82 0.16 195);
   --chart-2: oklch(0.68 0.22 305);
   --chart-3: oklch(0.75 0.18 160);
@@ -342,16 +343,39 @@
   text-transform: uppercase;
   color: var(--foreground);
   backdrop-filter: blur(14px);
+  isolation: isolate;
   transition:
     box-shadow 0.4s ease,
     transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
     background 0.4s ease;
 
-  &:hover {
-    transform: translateY(-3px);
-    background: color-mix(in oklab, var(--accent) 24%, transparent);
-    box-shadow: var(--shadow-neon-strong);
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 18% 8% -55%;
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--accent) 48%, transparent);
+    filter: blur(24px);
+    opacity: 0;
+    transform: scale(0.82);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
   }
+
+  &:hover {
+    background: color-mix(in oklab, var(--accent) 24%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent) 35%, transparent),
+      0 18px 50px -18px color-mix(in oklab, var(--accent) 58%, transparent);
+  }
+
+  &:hover::after {
+    opacity: 0.78;
+    transform: scale(1.06);
+  }
+}
+
+.animated-letter {
+  will-change: transform, color;
 }
 
 @utility text-gradient-neon {
