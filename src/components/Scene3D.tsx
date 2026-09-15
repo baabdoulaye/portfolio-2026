@@ -7,6 +7,7 @@ const vertexShader = /* glsl */ `
   uniform float uTime;
   varying vec2 vUv;
   varying float vHeight;
+  varying float vFlow;
 
   float waves(vec2 point) {
     float broad = sin(point.x * 0.72 + uTime * 0.48) * 0.42;
@@ -20,6 +21,7 @@ const vertexShader = /* glsl */ `
     vec3 displaced = position;
     float edgeSoftness = sin(uv.x * 3.14159265) * sin(uv.y * 3.14159265);
     vHeight = waves(position.xy);
+    vFlow = sin(position.x * 0.62 + position.y * 1.08 + uTime * 0.3);
     displaced.z += vHeight * (0.7 + edgeSoftness * 0.3);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
   }
@@ -29,6 +31,7 @@ const fragmentShader = /* glsl */ `
   uniform float uTime;
   varying vec2 vUv;
   varying float vHeight;
+  varying float vFlow;
 
   void main() {
     vec3 midnight = vec3(0.005, 0.018, 0.075);
@@ -37,13 +40,17 @@ const fragmentShader = /* glsl */ `
     vec3 cyan = vec3(0.0, 0.86, 0.95);
 
     float heightMix = smoothstep(-0.72, 0.76, vHeight);
-    float crest = smoothstep(0.48, 0.79, vHeight);
+    float crest = smoothstep(0.28, 0.73, vHeight);
     float softBand = 0.5 + 0.5 * sin(vUv.y * 18.0 + vUv.x * 8.0 - uTime * 0.36);
     float horizon = smoothstep(0.0, 0.72, vUv.y) * (1.0 - smoothstep(0.72, 1.0, vUv.y));
+    float contour = 1.0 - smoothstep(0.035, 0.16, abs(vFlow));
+    float diagonalRidge = 1.0 - smoothstep(0.03, 0.2, abs(sin(vUv.x * 9.0 + vUv.y * 12.0 + vHeight * 2.2 - uTime * 0.22)));
 
     vec3 color = mix(midnight, navy, heightMix);
     color = mix(color, azure, crest * 0.55);
     color += cyan * crest * (0.12 + softBand * 0.16);
+    color += azure * contour * (0.06 + crest * 0.13);
+    color += cyan * diagonalRidge * crest * 0.055;
     color += azure * horizon * 0.08;
     color *= 0.72 + 0.28 * smoothstep(0.0, 0.35, vUv.y);
     gl_FragColor = vec4(color, 1.0);
