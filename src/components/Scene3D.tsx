@@ -55,9 +55,11 @@ function DeepBlueWaves() {
   const uniforms = useMemo(() => ({ uTime: { value: 0 } }), []);
 
   useFrame((_, rawDelta) => {
-    if (!materialRef.current) return;
+    const material = materialRef.current;
+    if (!material) return;
     const delta = Math.min(rawDelta, 0.05);
-    materialRef.current.uniforms.uTime.value += delta * 0.16;
+    const timeUniform = material.uniforms["uTime"];
+    if (timeUniform) timeUniform.value += delta * 0.16;
   });
 
   return (
