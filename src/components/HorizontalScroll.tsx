@@ -1,7 +1,7 @@
 import { Children, useEffect, useRef, type ReactNode } from "react";
 
 /**
- * Navigation horizontale crantée : un geste de molette = un écran.
+ * Navigation horizontale crantée : molette, touches clavier (flèches, Espace) et swipe tactile (horizontal & vertical).
  */
 export default function HorizontalScroll({
   children,
@@ -14,6 +14,9 @@ export default function HorizontalScroll({
   const trackRef = useRef<HTMLDivElement>(null);
   const lockedRef = useRef(false);
   const activeRef = useRef(0);
+
+  // Coordonnées de départ du touch pour mobile
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -54,7 +57,10 @@ export default function HorizontalScroll({
     const onWheel = (event: WheelEvent) => {
       event.preventDefault();
       if (lockedRef.current || Math.abs(event.deltaY) + Math.abs(event.deltaX) < 8) return;
-      const direction = (Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX) > 0 ? 1 : -1;
+      const direction =
+        (Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX) > 0
+          ? 1
+          : -1;
       const next = Math.max(0, Math.min(panels.length - 1, activeRef.current + direction));
       if (next === activeRef.current) return;
       lockedRef.current = true;
@@ -74,19 +80,80 @@ export default function HorizontalScroll({
       }, 120);
     };
 
+    // Gestion du clavier : Flèches + Barre d'espace
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
-      event.preventDefault();
-      select(activeRef.current + (event.key === "ArrowRight" ? 1 : -1));
+      const activeTag = document.activeElement?.tagName.toLowerCase();
+      if (activeTag === "input" || activeTag === "textarea") return;
+
+      if (event.code === "Space") {
+        event.preventDefault();
+        select(activeRef.current + 1);
+        return;
+      }
+
+      if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        event.preventDefault();
+        select(activeRef.current + 1);
+      } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        event.preventDefault();
+        select(activeRef.current - 1);
+      }
+    };
+
+    // Gestion tactile mobile (swipe horizontal et vertical)
+    const onTouchStart = (event: TouchEvent) => {
+      const touch = event.touches[0];
+      if (!touch) return;
+
+      touchStart.current = {
+        x: touch.clientX,
+        y: touch.clientY,
+      };
+    };
+
+    const onTouchEnd = (event: TouchEvent) => {
+      const touch = event.changedTouches[0];
+      if (!touchStart.current || !touch || lockedRef.current) return;
+
+      const deltaX = touchStart.current.x - touch.clientX;
+      const deltaY = touchStart.current.y - touch.clientY;
+
+      const threshold = 45; // Seuil minimum en px pour déclencher le swipe
+
+      // Swipe horizontal prédominant
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
+        lockedRef.current = true;
+        if (deltaX > 0) {
+          select(activeRef.current + 1); // Glisse vers la gauche -> suivant
+        } else {
+          select(activeRef.current - 1); // Glisse vers la droite -> précédent
+        }
+      }
+      // Swipe vertical prédominant
+      else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > threshold) {
+        lockedRef.current = true;
+        if (deltaY > 0) {
+          select(activeRef.current + 1); // Glisse vers le haut -> suivant
+        } else {
+          select(activeRef.current - 1); // Glisse vers le bas -> précédent
+        }
+      }
+
+      touchStart.current = null;
     };
 
     track.addEventListener("wheel", onWheel, { passive: false });
     track.addEventListener("scroll", onScroll, { passive: true });
+    track.addEventListener("touchstart", onTouchStart, { passive: true });
+    track.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("keydown", onKeyDown);
+
     return () => {
       window.clearTimeout(settleTimer);
       track.removeEventListener("wheel", onWheel);
       track.removeEventListener("scroll", onScroll);
+      track.removeEventListener("touchstart", onTouchStart);
+      track.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [onActiveIndexChange, panels.length]);

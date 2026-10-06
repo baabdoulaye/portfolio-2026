@@ -54,15 +54,6 @@ export const projects: Project[] = [
     href: "https://github.com/",
     line: "Atlas Cloud rend les infrastructures complexes immédiatement lisibles.",
   },
-  {
-    title: "Vanta Lab",
-    description:
-      "Laboratoire digital immersif mêlant narration interactive, modèles 3D et transitions cinématiques.",
-    tags: ["Three.js", "React", "Cinema 4D", "WebGL"],
-    video: "/project-vanta.mp4",
-    href: "https://github.com/",
-    line: "Vanta Lab est mon terrain d'expérimentation 3D et narrative.",
-  },
 ];
 
 /** Texte de la bulle pour chaque panneau (Hero, projets…, Contact). */

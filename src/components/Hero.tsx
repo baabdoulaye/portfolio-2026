@@ -16,27 +16,32 @@ export default function Hero({ onExplore }: { onExplore: () => void }) {
           className="mb-5 inline-flex items-center gap-2 border border-accent/60 bg-card/40 px-4 py-2 text-xs font-bold uppercase text-accent backdrop-blur-xl"
         >
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
-          Portfolio 2026
+          {/* Portfolio 2026 */}
         </motion.p>
-
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.1 }}
-          className="hero-title max-w-[12ch] origin-left font-display text-6xl font-bold leading-[0.78] text-foreground sm:text-8xl md:text-9xl"
+          className="hero-title max-w-full origin-left font-display text-[11vw] xs:text-5xl font-bold leading-[0.85] text-foreground sm:text-8xl md:text-9xl tracking-tight"
         >
-          <AnimatedText text="ABDOULAYE" className="block" />
-          <AnimatedText text="BA" className="block" />
+          <AnimatedText text="ABDOULAYE" className="block whitespace-nowrap" />
+          <AnimatedText text="BA" className="block whitespace-nowrap" />
         </motion.h1>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.25 }}
-          className="mt-7 max-w-xl text-lg font-medium text-foreground/80 md:text-2xl"
+          className="mt-7 max-w-2xl"
         >
-          Architecte Web &amp; Développeur Full-Stack
-        </motion.p>
+          <p className="text-lg font-semibold text-foreground md:text-2xl">
+            Architecte Web &amp; Développeur Full-Stack
+          </p>
+          <p className="mt-2 text-base text-foreground/80 md:text-lg">
+            Je transforme vos visions en interfaces web tellement fluides qu'on en croirait de la
+            magie.
+          </p>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -44,25 +49,25 @@ export default function Hero({ onExplore }: { onExplore: () => void }) {
           transition={{ duration: 0.9, delay: 0.4 }}
           className="mt-8 flex flex-wrap items-center gap-5"
         >
-           <MotionButton
-             onClick={onExplore}
-             className="btn-glow h-auto"
-             data-cursor-focus
-             whileHover={{ scaleX: 1.045, scaleY: 1.025 }}
-             whileTap={{ scale: 0.985 }}
-             transition={{ type: "spring", stiffness: 170, damping: 20, mass: 0.75 }}
-           >
-             <motion.span
-               className="relative z-10"
-               whileHover={{ color: "var(--letter-highlight)", textShadow: "0 0 18px var(--letter-highlight)" }}
-               transition={{ duration: 0.4, ease: "easeOut" }}
-             >
-               Explorer mes projets
-             </motion.span>
-           </MotionButton>
-          <span className="text-xs font-bold uppercase text-muted-foreground">
-            Glissez vers la droite →
-          </span>
+          <MotionButton
+            onClick={onExplore}
+            className="btn-glow h-auto"
+            data-cursor-focus
+            whileHover={{ scaleX: 1.045, scaleY: 1.025 }}
+            whileTap={{ scale: 0.985 }}
+            transition={{ type: "spring", stiffness: 170, damping: 20, mass: 0.75 }}
+          >
+            <motion.span
+              className="relative z-10"
+              whileHover={{
+                color: "var(--letter-highlight)",
+                textShadow: "0 0 18px var(--letter-highlight)",
+              }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              Explorer mes projets
+            </motion.span>
+          </MotionButton>
         </motion.div>
       </div>
     </section>

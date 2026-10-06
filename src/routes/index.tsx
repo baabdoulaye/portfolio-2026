@@ -36,7 +36,9 @@ function Index() {
   const [activeIndex, setActiveIndex] = useState(0);
   const handleActiveIndexChange = useCallback((index: number) => setActiveIndex(index), []);
   const explore = () => {
-    document.getElementById("portfolio-track")?.scrollTo({ left: window.innerWidth * 2, behavior: "smooth" });
+    document
+      .getElementById("portfolio-track")
+      ?.scrollTo({ left: window.innerWidth * 2, behavior: "smooth" });
   };
 
   return (
@@ -47,16 +49,15 @@ function Index() {
           activeIndex === 1 ? "opacity-0" : "opacity-100"
         }`}
       >
-        <Suspense fallback={null}><Scene3D /></Suspense>
+        <Suspense fallback={null}>
+          <Scene3D />
+        </Suspense>
         <div className="absolute inset-0 bg-[image:var(--gradient-vignette)]" />
       </div>
 
       <header className="pointer-events-none fixed left-0 top-0 z-40 flex w-full items-center justify-between px-8 py-6 md:px-24">
         <span className="font-display text-sm uppercase tracking-[0.4em] text-foreground">
           A. BA
-        </span>
-        <span className="text-[11px] uppercase tracking-[0.32em] text-muted-foreground">
-          Full-Stack / 3D
         </span>
       </header>
 

@@ -2,10 +2,18 @@ import { motion } from "framer-motion";
 import AnimatedText from "@/components/AnimatedText";
 
 const links = [
-  { label: "Téléphone", href: "tel:+33000000000", value: "+33 • •• •• •• ••" },
-  { label: "E-mail", href: "mailto:contact@example.com", value: "contact@example.com" },
-  { label: "GitHub", href: "https://github.com/", value: "github.com/abdoulaye" },
-  { label: "LinkedIn", href: "https://linkedin.com/", value: "linkedin.com/in/abdoulaye" },
+  { label: "Téléphone", href: "tel:+33 06 51 45 65 36", value: "+33 06 51 45 65 36" },
+  { label: "E-mail", href: "abdoulaye_ba@outlook.com", value: "abdoulaye_ba@outlook.com" },
+  {
+    label: "GitHub",
+    href: "https://github.com/baabdoulaye",
+    value: "https://github.com/baabdoulaye",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/abdoulaye-ba-archhitecte-web/",
+    value: "https://www.linkedin.com/in/abdoulaye-ba-archhitecte-web/",
+  },
 ];
 
 export default function Contact() {
@@ -31,7 +39,8 @@ export default function Contact() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="mt-6 max-w-xl text-base text-muted-foreground md:text-lg"
         >
-          Disponible pour des missions freelance, des collaborations et des produits numériques ambitieux.
+          Egalement ouvert aux missions freelance. Je peux coder corps et âme jusqu'à en mourir de
+          soif — bon, prévoyez juste une bouteille d'eau ou un espresso pour éviter le drame.
         </motion.p>
 
         <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -49,7 +58,9 @@ export default function Contact() {
               data-cursor-focus
             >
               <span className="text-[10px] font-bold uppercase text-accent">{l.label}</span>
-              <span className="mt-2 block truncate font-display text-sm text-foreground md:text-base">{l.value}</span>
+              <span className="mt-2 block truncate font-display text-sm text-foreground md:text-base">
+                {l.value}
+              </span>
             </motion.a>
           ))}
         </div>
@@ -61,7 +72,12 @@ export default function Contact() {
           transition={{ duration: 0.7, delay: 0.4 }}
           className="mt-10"
         >
-          <a href="/cv.pdf" download className="btn-glow inline-flex" data-cursor-focus>
+          <a
+            href="/cv_abdoulaye_ba.pdf"
+            download
+            className="btn-glow inline-flex"
+            data-cursor-focus
+          >
             Télécharger mon CV
           </a>
         </motion.div>
