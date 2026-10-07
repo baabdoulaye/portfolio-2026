@@ -60,7 +60,7 @@ export default function Hero({ onExplore }: { onExplore: () => void }) {
             <motion.span
               className="relative z-10"
               whileHover={{
-                color: "var(--letter-highlight)",
+                color: "#ffffff",
                 textShadow: "0 0 18px var(--letter-highlight)",
               }}
               transition={{ duration: 0.4, ease: "easeOut" }}

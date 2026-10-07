@@ -4,7 +4,6 @@ export type Project = {
   tags: string[];
   video?: string;
   href: string;
-  /** Réplique affichée dans la bulle de dialogue du personnage 3D. */
   line: string;
 };
 
@@ -56,9 +55,10 @@ export const projects: Project[] = [
   },
 ];
 
-/** Texte de la bulle pour chaque panneau (Hero, projets…, Contact). */
+/** Texte de la bulle pour les 4 grands panneaux du portfolio */
 export const panelLines: string[] = [
   "Salut ! Je suis Abdoulaye. Scrolle pour visiter mes projets 🚀",
-  ...projects.map((p) => p.line),
+  "Je conçois des architectures solides et des interfaces qui marquent.",
+  "Explore mes projets récents ! Utilise les flèches pour changer de projet.",
   "On construit quelque chose ensemble ? Mes liens sont juste là !",
 ];

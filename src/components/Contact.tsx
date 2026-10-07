@@ -1,4 +1,6 @@
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import AnimatedText from "@/components/AnimatedText";
 
 const links = [
@@ -17,6 +19,13 @@ const links = [
 ];
 
 export default function Contact() {
+  const [isCvHovered, setIsCvHovered] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <section className="relative flex h-dvh w-screen shrink-0 items-center overflow-hidden px-6 py-20 md:px-12 lg:px-20">
       <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-background/95 via-background/75 to-background/20" />
@@ -70,7 +79,9 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="mt-10"
+          className="mt-10 inline-flex flex-col items-center"
+          onMouseEnter={() => setIsCvHovered(true)}
+          onMouseLeave={() => setIsCvHovered(false)}
         >
           <a
             href="/cv_abdoulaye_ba.pdf"
@@ -80,8 +91,36 @@ export default function Contact() {
           >
             Télécharger mon CV
           </a>
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            (ou survolez pour le visualiser)
+          </p>
         </motion.div>
       </div>
+
+      {/* Rendu téléporté hors du slider dans le <body> via Portal */}
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {isCvHovered && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="pointer-events-none fixed inset-0 z-[99999] flex items-center justify-center bg-black/40 p-6 backdrop-blur-sm"
+              >
+                <div className="relative max-h-[92vh] max-w-[92vw]">
+                  <img
+                    src="/CV_Abdoulaye_Ba-1.png"
+                    alt="Aperçu CV Abdoulaye Ba"
+                    className="max-h-[88vh] max-w-[88vw] rounded-xl object-contain shadow-[0_20px_50px_rgba(0,0,0,0.85)] ring-1 ring-cyan-400/30"
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body,
+        )}
     </section>
   );
 }
