@@ -3,19 +3,20 @@ export type Project = {
   description: string;
   tags: string[];
   video?: string;
-  href: string;
-  line: string;
+  href?: string;
+  github?: string; // <-- Ajoute cette ligne ici !
+  line?: string;
 };
 
 export const projects: Project[] = [
   {
-    title: "Nebula Dashboard",
+    title: "Green Afreeca",
     description:
-      "Plateforme d'analytics temps réel : visualisations WebGL, websockets et rendu incrémental.",
-    tags: ["React", "TypeScript", "Node", "WebSocket"],
-    video: "/project-nebula.mp4",
-    href: "https://github.com/",
-    line: "Voici Nebula Dashboard, mon analytics temps réel en WebGL !",
+      "Co-fondateur de Green Afreeca, une platforme E-commerce full-stack (MERN & Docker) valorisant les superaliments bio d'Afrique avec une architecture moderne, fluide et sécurisée. ",
+    tags: ["React", "MongoDB", "Node", "Express", "Docker", "Stripe", "Tailwind"],
+    video: "/screenvideo_green_afreeca.mp4",
+    href: "https://www.greenafreeca.com/",
+    github: "https://github.com/baabdoulaye/green_afreeca", // <-- Ton lien GitHub ici
   },
   {
     title: "Orbit Commerce",
@@ -24,34 +25,55 @@ export const projects: Project[] = [
     tags: ["Next", "Stripe", "Docker", "Redis"],
     video: "/project-orbit.mp4",
     href: "https://github.com/",
-    line: "Orbit Commerce : une architecture e-commerce headless ultra rapide.",
   },
   {
-    title: "Synapse AI",
+    title: "Thé Tip Top - Projet de fin d'année de Master",
     description:
-      "Assistant conversationnel multimodal avec pipeline RAG et interface immersive 3D.",
-    tags: ["React", "Python", "LLM", "Three.js"],
+      "Application web du jeu-concours Thé Tip Top : les clients participent via un code ticket obtenu en boutique et remportent des lots (thés, coffrets…). ",
+    tags: [
+      "React",
+      "Tailwind",
+      "Node",
+      "Express",
+      "Stripe",
+      "JWT",
+      "BCRYPT",
+      "Docker",
+      "Prometheus",
+      "Grafana",
+      "Jenkins",
+      "POSTGRESQL",
+      "Kibana",
+    ],
     video: "/project-synapse.mp4",
-    href: "https://github.com/",
-    line: "Synapse AI, un assistant multimodal avec pipeline RAG.",
+    href: "http://dsp5-archi-024a-g3.fr/",
+    github: "https://github.com/HilmiKeles/projet-fin-annee",
   },
   {
-    title: "Pulse Studio",
+    title: "CONGEPIE - Platforme de gestion de congés",
     description:
-      "Expérience créative WebGL où typographie, son et mouvement composent une identité en temps réel.",
-    tags: ["R3F", "GLSL", "Motion", "Audio"],
-    video: "/project-pulse.mp4",
-    href: "https://github.com/",
-    line: "Pulse Studio transforme le mouvement et le son en identité vivante.",
+      "Application de gestion des congés pour entreprises, permettant aux employés de soumettre des demandes de congés et aux managers de les approuver.",
+    tags: ["REACT", "SHADCN UI", "TAILWIND", "NODE", "EXPRESS", "SQL", "JWT"],
+    video: "/congepie.mp4",
+    github: "https://github.com/baabdoulaye/congepiemanagement",
   },
   {
-    title: "Atlas Cloud",
+    title: "EPIE CONNECT",
     description:
-      "Console d'infrastructure distribuée pensée pour surveiller, comparer et piloter les systèmes critiques.",
-    tags: ["TypeScript", "Cloud", "Data", "UX"],
+      "Application intranet centralisant la gestion opérationnelle, les indicateurs clés  et les données essentielles d'un centre de formation.",
+    tags: [
+      "REACT ",
+      "SHADCN UI",
+      "TAILWIND",
+      "NODE",
+      "EXPRESS",
+      "MONGODB",
+      "JWT",
+      "BCRYPT",
+      "MONGOOSE",
+    ],
     video: "/project-atlas.mp4",
-    href: "https://github.com/",
-    line: "Atlas Cloud rend les infrastructures complexes immédiatement lisibles.",
+    github: "https://github.com/baabdoulaye/epie-formation-hub",
   },
 ];
 

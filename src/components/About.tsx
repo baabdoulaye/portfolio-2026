@@ -351,7 +351,7 @@ export default function About({ active }: { active: boolean }) {
             viewport={{ amount: 0.3 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="text-sm font-bold uppercase text-accent">02 / À propos</p>
+            <p className="text-sm font-bold uppercase text-accent">À propos</p>
             <h2 className="mt-3 origin-left font-display text-4xl font-bold leading-[0.95] text-foreground sm:text-6xl xl:text-7xl">
               <AnimatedText text="JE CONSTRUIS DES" className="block" />
               <AnimatedText text="EXPÉRIENCES QUI MARQUENT." className="block" />

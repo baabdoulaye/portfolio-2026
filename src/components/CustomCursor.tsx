@@ -21,19 +21,30 @@ export default function CustomCursor() {
       const target = event.target;
       if (!(target instanceof Element)) return;
 
-      // Si on survole un élément avec data-cursor-shrink : petit rond et curseur système invisible
+      // 1. Si on survole un élément avec data-cursor-default : on masque le rond et on affiche la main
+      const isDefault = Boolean(target.closest("[data-cursor-default]"));
+      if (isDefault) {
+        setActive(false);
+        setShrink(false);
+        setVisible(false); // masque le rond custom
+        document.documentElement.style.cursor = "pointer";
+        return;
+      }
+
+      // Remet le curseur système caché pour le reste du site
+      document.documentElement.style.cursor = "none";
+
+      // 2. Si l'élément demande un mini curseur
       const isShrink = Boolean(target.closest("[data-cursor-shrink]"));
       if (isShrink) {
         setShrink(true);
         setActive(false);
-        document.documentElement.style.cursor = "none";
         return;
       }
       setShrink(false);
 
-      // Grossissement normal pour les autres boutons/liens
+      // 3. Grossissement normal pour les autres boutons / liens
       setActive(Boolean(target.closest("a, button, video, [data-cursor-focus]")));
-      document.documentElement.style.cursor = "none";
     };
 
     const leave = () => {
