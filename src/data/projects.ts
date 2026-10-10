@@ -19,12 +19,13 @@ export const projects: Project[] = [
     github: "https://github.com/baabdoulaye/green_afreeca", // <-- Ton lien GitHub ici
   },
   {
-    title: "Orbit Commerce",
+    title: "Unleashed ",
     description:
-      "E-commerce headless haute performance, checkout optimisé et rendu côté serveur edge.",
-    tags: ["Next", "Stripe", "Docker", "Redis"],
-    video: "/project-orbit.mp4",
-    href: "https://github.com/",
+      "Fondateur de Unleashed : Un média en ligne immersif entièrement dédié au sprint et à l'athlétisme.",
+    tags: ["React", "Node", "Tailwind", "Framer Motion", "Vercel", "Vite", "TanStack"],
+    video: "/unleashed.mp4",
+    href: "https://unleashed-media.fr",
+    github: "https://github.com/baabdoulaye/unleashed-media",
   },
   {
     title: "Thé Tip Top - Projet de fin d'année de Master",
