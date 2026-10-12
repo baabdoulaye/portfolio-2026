@@ -28,7 +28,8 @@ export default function ProjectsCarousel({ active }: { active: boolean }) {
   if (!project) return null;
 
   return (
-    <section className="relative flex h-dvh w-screen shrink-0 items-center justify-center overflow-hidden px-6 py-16 md:px-12 lg:px-20">
+    <section className="relative flex h-dvh w-screen shrink-0 items-center justify-center overflow-hidden px-6 pt-16 pb-12 md:pt-20 md:px-12 lg:px-20">
+      {" "}
       {/* 1. Aperçu vidéo dynamique en arrière-plan */}
       <div className="absolute inset-0 z-0 overflow-hidden bg-[#03050a]">
         <AnimatePresence mode="wait">
@@ -92,32 +93,32 @@ export default function ProjectsCarousel({ active }: { active: boolean }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="glass-card relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/40 p-8 shadow-2xl backdrop-blur-md md:p-12"
+              className="glass-card relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-slate-950/40 p-6 shadow-2xl backdrop-blur-md md:p-10 h-[400px] md:h-[440px]"
             >
-              <div className="max-w-2xl">
-                <span className="text-xs font-semibold uppercase tracking-wider text-cyan-400"></span>
-                <h3 className="mt-2 font-display text-4xl font-bold tracking-tight text-white md:text-6xl">
-                  {project.title}
-                </h3>
-                <p className="mt-4 text-base leading-relaxed text-foreground/85 md:text-lg">
-                  {project.description}
-                </p>
+              <div className="flex flex-col h-full justify-between">
+                <div className="max-w-2xl">
+                  <h3 className="mt-2 font-display text-4xl font-bold tracking-tight text-white md:text-6xl line-clamp-2">
+                    {project.title}
+                  </h3>
+                  <p className="mt-4 text-base leading-relaxed text-foreground/85 md:text-lg line-clamp-3">
+                    {project.description}
+                  </p>
 
-                {/* Tags */}
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="tag-neon rounded-full px-3 py-1 text-xs font-medium tracking-wide"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  {/* Tags */}
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="tag-neon rounded-full px-3 py-1 text-xs font-medium tracking-wide"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Bouton Live / Code */}
-                <div className="mt-8 flex items-center gap-4">
-                  {/* Bouton Voir le projet (affiché seulement si un lien href existe) */}
+                <div className="flex items-center gap-4 pt-4">
                   {project.href && (
                     <a
                       href={project.href}
@@ -130,7 +131,6 @@ export default function ProjectsCarousel({ active }: { active: boolean }) {
                       <span className="text-xs">↗</span>
                     </a>
                   )}
-                  {/* Bouton GitHub (affiché seulement si un lien github existe) */}
                   {project.github && (
                     <a
                       href={project.github}
