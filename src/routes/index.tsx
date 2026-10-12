@@ -59,11 +59,7 @@ function Index() {
         <div className="absolute inset-0 bg-[image:var(--gradient-vignette)]" />
       </div>
 
-      <header className="pointer-events-none fixed left-0 top-0 z-40 flex w-full items-center justify-between px-8 py-6 md:px-24">
-        <span className="font-display text-sm uppercase tracking-[0.4em] text-foreground">
-          A. BA
-        </span>
-      </header>
+      <header className="pointer-events-none fixed left-0 top-0 z-40 flex w-full items-center justify-between px-8 py-6 md:px-24"></header>
 
       {/* Défilement horizontal calé sur 4 panneaux */}
       <div className="relative z-20 h-dvh overflow-hidden">
