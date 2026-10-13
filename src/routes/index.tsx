@@ -56,7 +56,7 @@ function Index() {
         <Suspense fallback={null}>
           <Scene3D />
         </Suspense>
-        <div className="absolute inset-0 bg-[image:var(--gradient-vignette)]" />
+        {/* <div className="absolute inset-0 bg-[image:var(--gradient-vignette)]" /> */}
       </div>
 
       <header className="pointer-events-none fixed left-0 top-0 z-40 flex w-full items-center justify-between px-8 py-6 md:px-24"></header>

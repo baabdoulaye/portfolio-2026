@@ -352,9 +352,11 @@ export default function About({ active }: { active: boolean }) {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className="text-sm font-bold uppercase text-accent">À propos</p>
-            <h2 className="mt-3 origin-left font-display text-4xl font-bold leading-[0.95] text-foreground sm:text-6xl xl:text-7xl">
+            {/* Espacement de ligne aéré sur mobile et alignement propre sur desktop */}
+            <h2 className="mt-3 origin-left font-display text-4xl font-bold leading-[1.05] text-foreground sm:text-6xl xl:text-7xl md:leading-[0.95]">
               <AnimatedText text="JE CONSTRUIS DES" className="block" />
-              <AnimatedText text="EXPÉRIENCES QUI MARQUENT." className="block" />
+              <AnimatedText text="EXPÉRIENCES" className="block md:inline-block md:mr-4 lg:mr-5" />
+              <AnimatedText text="QUI MARQUENT." className="block md:inline-block" />
             </h2>
           </motion.div>
 
@@ -363,7 +365,7 @@ export default function About({ active }: { active: boolean }) {
             des projets qui marquent les esprits !
           </p>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 pt-2">
             {skills.map((skill) => (
               <span key={skill} className="tag-neon">
                 {skill}

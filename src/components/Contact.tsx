@@ -5,7 +5,7 @@ import AnimatedText from "@/components/AnimatedText";
 
 const links = [
   { label: "Téléphone", href: "tel:+33 06 51 45 65 36", value: "+33 06 51 45 65 36" },
-  { label: "E-mail", href: "abdoulaye_ba@outlook.com", value: "abdoulaye_ba@outlook.com" },
+  { label: "E-mail", href: "mailto:abdoulaye_ba@outlook.com", value: "abdoulaye_ba@outlook.com" },
   {
     label: "GitHub",
     href: "https://github.com/baabdoulaye",
@@ -28,7 +28,9 @@ export default function Contact() {
 
   return (
     <section className="relative flex h-dvh w-screen shrink-0 items-center overflow-hidden px-6 py-20 md:px-12 lg:px-20">
-      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-background/95 via-background/75 to-background/20" />
+      {/* FINI LE GRIS : On utilise black pour une ombre pure et premium */}
+      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-black/95 via-black/75 to-transparent" />
+
       <div className="relative z-10 w-full max-w-5xl">
         <p className="mb-4 text-xs font-bold uppercase text-accent">Contact</p>
         <motion.h2

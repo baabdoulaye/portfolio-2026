@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AnimatedText from "@/components/AnimatedText";
 
@@ -7,7 +8,9 @@ const MotionButton = motion.create(Button);
 export default function Hero({ onExplore }: { onExplore: () => void }) {
   return (
     <section className="relative flex h-dvh w-screen shrink-0 items-end overflow-hidden px-6 pb-16 pt-24 md:px-12 md:pb-20 lg:px-20">
-      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-background/90 via-background/60 to-transparent" />
+      {/* Assombrissement progressif naturel */}
+      <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+
       <div className="relative z-10 w-full translate-z-0">
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -16,7 +19,7 @@ export default function Hero({ onExplore }: { onExplore: () => void }) {
           className="mb-5 inline-flex items-center gap-2 border border-accent/60 bg-card/40 px-4 py-2 text-xs font-bold uppercase text-accent backdrop-blur-xl"
         >
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
-          {/* Portfolio 2026 */}
+          Portfolio 2026
         </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
@@ -28,16 +31,17 @@ export default function Hero({ onExplore }: { onExplore: () => void }) {
           <AnimatedText text="BA" className="block whitespace-nowrap" />
         </motion.h1>
 
+        {/* Effet blur "glassmorphism" très élégant pour détacher le texte de l'illustration */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.25 }}
-          className="mt-7 max-w-2xl"
+          className="mt-7 max-w-2xl rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-md shadow-2xl"
         >
-          <p className="text-lg font-semibold text-foreground md:text-2xl">
+          <p className="text-lg font-bold text-white md:text-2xl">
             Architecte Web &amp; Développeur Full-Stack
           </p>
-          <p className="mt-2 text-base text-foreground/80 md:text-lg">
+          <p className="mt-3 text-base text-white/95 md:text-lg">
             Je transforme vos visions en interfaces web tellement fluides qu'on en croirait de la
             magie.
           </p>
@@ -68,6 +72,24 @@ export default function Hero({ onExplore }: { onExplore: () => void }) {
               Explorer mes projets
             </motion.span>
           </MotionButton>
+        </motion.div>
+
+        {/* Indicateur de swipe mobile discret en bas */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.6 }}
+          className="mt-12 flex items-center justify-center md:hidden"
+        >
+          <div className="flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-4 py-2 backdrop-blur-md">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-white/80">
+              Glisser pour explorer
+            </span>
+            <div className="flex items-center text-accent">
+              <ChevronRight className="h-4 w-4 animate-bounce" />
+              <ChevronRight className="-ml-2.5 h-4 w-4 animate-bounce [animation-delay:200ms]" />
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>
