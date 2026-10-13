@@ -93,7 +93,7 @@ export default function ProjectsCarousel({ active }: { active: boolean }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="glass-card relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-slate-950/40 p-6 shadow-2xl backdrop-blur-md md:p-10 h-[400px] md:h-[440px]"
+              className="glass-card relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-slate-950/40 p-6 shadow-2xl backdrop-blur-md md:p-10 h-auto md:h-[440px]"
             >
               <div className="flex flex-col h-full justify-between">
                 <div className="max-w-2xl">
